@@ -1,6 +1,11 @@
-import userController from "./userController.js";
+import { Request, Response } from "express";
+import { Tweet } from "../models/Tweet";
+
+import userController from "./userController";
 
 class TweetsController {
+  tweets: Tweet[];
+
   constructor() {
     this.tweets = [];
 
@@ -10,7 +15,7 @@ class TweetsController {
     this.reverseTweets = this.reverseTweets.bind(this);
   }
 
-  postTweet(req, res) {
+  postTweet(req: Request, res: Response): Response {
     const { tweet, username } = req.body;
 
     if (!username || !tweet) {
@@ -21,15 +26,14 @@ class TweetsController {
 
     this.tweets.push({ username, tweet, avatar });
 
-    res.status(201).send("OK, seu tweet foi criado");
+    return res.status(201).send("OK, seu tweet foi criado");
   }
 
-  getTweets(req, res) {
-    const { page } = req.query;
+  getTweets(req: Request, res: Response): Response {
+    const page = Number(req.query.page);
 
     if (page && page < 1) {
-      res.status(400).send("Informe uma página válida!");
-      return;
+      return res.status(400).send("Informe uma página válida!");
     }
 
     const limite = 10;
@@ -40,18 +44,18 @@ class TweetsController {
       return res.send(this.reverseTweets());
     }
 
-    res.status(200).send([...this.tweets].reverse().slice(start, end));
+    return res.status(200).send([...this.tweets].reverse().slice(start, end));
   }
 
-  getUserTweets(req, res) {
+  getUserTweets(req: Request, res: Response): Response {
     const { username } = req.params;
 
     const tweetsDoUsuario = this.tweets.filter((t) => t.username === username);
 
-    res.status(200).send(tweetsDoUsuario);
+    return res.status(200).send(tweetsDoUsuario);
   }
 
-  reverseTweets() {
+  reverseTweets(): Tweet[] {
     return [...this.tweets].reverse();
   }
 }

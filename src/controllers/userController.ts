@@ -6,25 +6,31 @@ class UserController {
 
   constructor() {
     this.users = [];
+
     this.signUp = this.signUp.bind(this);
     this.getLoggedUser = this.getLoggedUser.bind(this);
   }
 
-  signUp(req: Request, res: Response) {
+  signUp(req: Request, res: Response): Response {
     const { username, avatar } = req.body;
 
     if (!username || !avatar) {
-      res.status(400).send("Todos os campos são obrigatórios!");
-      return;
+      return res.status(400).send("Todos os campos são obrigatórios!");
     }
 
     this.users.push({ username, avatar });
 
-    res.status(200).send("OK deu tudo certo");
+    return res.status(200).send("OK deu tudo certo");
   }
 
-  getLoggedUser(username: string) {
-    return this.users.find((user) => user.username === username);
+  getLoggedUser(username: string): User {
+    const user = this.users.find((user) => user.username === username);
+
+    if (!user) {
+      throw new Error("Usuário não encontrado");
+    }
+
+    return user;
   }
 }
 
