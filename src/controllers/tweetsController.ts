@@ -4,7 +4,7 @@ import { Tweet } from "../models/Tweet";
 import userController from "./userController";
 
 class TweetsController {
-  tweets: Tweet[];
+  private tweets: Tweet[];
 
   constructor() {
     this.tweets = [];
@@ -44,7 +44,7 @@ class TweetsController {
       return res.send(this.reverseTweets());
     }
 
-    return res.status(200).send([...this.tweets].reverse().slice(start, end));
+    return res.status(200).send(this.reverseTweets().slice(start, end));
   }
 
   getUserTweets(req: Request, res: Response): Response {
@@ -55,7 +55,7 @@ class TweetsController {
     return res.status(200).send(tweetsDoUsuario);
   }
 
-  reverseTweets(): Tweet[] {
+  private reverseTweets(): Tweet[] {
     return [...this.tweets].reverse();
   }
 }

@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { User } from "../models/User";
 
 class UserController {
-  users: User[];
+  private users: User[];
 
   constructor() {
     this.users = [];
