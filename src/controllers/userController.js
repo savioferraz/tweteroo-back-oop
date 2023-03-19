@@ -1,6 +1,8 @@
-class userController {
+class UserController {
   constructor() {
     this.users = [];
+    this.signUp = this.signUp.bind(this);
+    this.getLoggedUser = this.getLoggedUser.bind(this);
   }
 
   signUp(req, res) {
@@ -15,4 +17,10 @@ class userController {
 
     res.status(200).send("OK deu tudo certo");
   }
+
+  getLoggedUser(username) {
+    return this.users.find((user) => user.username === username);
+  }
 }
+
+export default new UserController();
