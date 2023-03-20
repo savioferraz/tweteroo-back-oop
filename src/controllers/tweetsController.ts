@@ -1,32 +1,15 @@
 import { Request, Response } from "express";
 import { Tweet } from "../models/Tweet";
 
-import userController from "./userController";
-
 class TweetsController {
   private tweets: Tweet[];
 
   constructor() {
     this.tweets = [];
 
-    this.postTweet = this.postTweet.bind(this);
     this.getTweets = this.getTweets.bind(this);
     this.getUserTweets = this.getUserTweets.bind(this);
     this.reverseTweets = this.reverseTweets.bind(this);
-  }
-
-  postTweet(req: Request, res: Response): Response {
-    const { tweet, username } = req.body;
-
-    if (!username || !tweet) {
-      return res.status(400).send("Todos os campos são obrigatórios!");
-    }
-
-    const { avatar } = userController.getLoggedUser(username);
-
-    this.tweets.push({ username, tweet, avatar });
-
-    return res.status(201).send("OK, seu tweet foi criado");
   }
 
   getTweets(req: Request, res: Response): Response {
